@@ -84,6 +84,9 @@ void AUnrealAxeThrowCharacter::SetupPlayerInputComponent(class UInputComponent* 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AUnrealAxeThrowCharacter::Look);
 
+		// Projectile throw
+		EnhancedInputComponent->BindAction(ThrowProjectileAction, ETriggerEvent::Triggered, this, &AUnrealAxeThrowCharacter::ThrowProjectile);
+
 	}
 
 }
@@ -122,6 +125,21 @@ void AUnrealAxeThrowCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AUnrealAxeThrowCharacter::ThrowProjectile(const FInputActionValue& Value)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Axe thrown at player position %s"), *GetActorLocation().ToString());
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Instigator = this;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	const FRotator SpawnRotation = GetControlRotation();
+	const FVector SpawnLocation = GetActorLocation() + (SpawnRotation.Vector() * 2.f);
+
+
+	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnLocation, SpawnRotation, SpawnParams);
 }
 
 

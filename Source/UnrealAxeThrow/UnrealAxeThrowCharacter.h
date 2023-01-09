@@ -37,6 +37,13 @@ class AUnrealAxeThrowCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* ThrowProjectileAction;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	const TSubclassOf<AActor> ProjectileClass;
+
 public:
 	AUnrealAxeThrowCharacter();
 	
@@ -48,6 +55,9 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+
+	void ThrowProjectile(const FInputActionValue& Value);
 			
 
 protected:
